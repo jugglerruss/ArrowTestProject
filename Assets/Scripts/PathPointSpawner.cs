@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class PathPointSpawner : MonoBehaviour
 {
     [SerializeField] private PathPoint _pathPointPrefab;
-    [SerializeField] public float HandleRadius = 20;
+    [FormerlySerializedAs("HandleRadius")] [SerializeField] public float _handleRadius = 20;
     public List<PathPoint> PathPoints { get; private set; }
     public UnityEvent<List<PathPoint>> OnPathPointCreate;
     public UnityEvent OnPathPointMove;
@@ -24,7 +25,8 @@ public class PathPointSpawner : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        InstantiatePoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        if (Camera.main != null)
+            InstantiatePoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
     private void PathPointMove()
     {

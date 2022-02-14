@@ -2,21 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [ExecuteInEditMode]
-public class FreeMoveHandleExample : MonoBehaviour
+public sealed class FreeMoveHandleExample : MonoBehaviour
 {
-    public Vector3 targetPosition { get { return m_TargetPosition; } set { m_TargetPosition = value; } }
+    public Vector3 TargetPosition { get => _mTargetPosition; set => _mTargetPosition = value; }
     [SerializeField]
-    private Vector3 m_TargetPosition = new Vector3(0f, 0f, 0f);
-    private Vector3 old_TargetPosition = new Vector3(0f, 0f, 0f);
+    private Vector3 _mTargetPosition = new Vector3(0f, 0f, 0f);
+    private Vector3 _oldTargetPosition = new Vector3(0f, 0f, 0f);
     public Action OnPathPointMove;
-    public virtual void Update()
+    public void Update()
     {
-        if (old_TargetPosition == m_TargetPosition)
+        if (_oldTargetPosition == _mTargetPosition)
             return;
-        old_TargetPosition = m_TargetPosition;
+        _oldTargetPosition = _mTargetPosition;
         OnPathPointMove?.Invoke();
-        transform.position = targetPosition;
+        transform.position = TargetPosition;
     }
 }
